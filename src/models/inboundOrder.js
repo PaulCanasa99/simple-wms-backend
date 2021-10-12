@@ -11,7 +11,6 @@ const inboundOrderSchema = new mongoose.Schema({
 
 inboundOrderSchema.pre('save', function(next){
   HandlingUnit.insertMany(this.handlingUnits, function(err, res){
-      console.log('inserted');
       if(err) throw err;
       next();
   })

@@ -5,12 +5,12 @@ const getProducts = async (req, res) => {
     res.send(products);
 }
 
-const getProductByCode = async (code) => {
-  const product = await Product.findOne({code: code}).exec();
-  return product;
+const getProductById = async (req, res) => {
+  const product = await Product.findById(req.params.productId);
+  res.send(product);
 }
 
 module.exports = {
     getProducts,
-    getProductByCode
+    getProductById
 }

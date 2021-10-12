@@ -18,16 +18,15 @@ const importInboundOrders = async (req, res) => {
       const handlingUnit = new HandlingUnit({product: product._id, expirationDate: expirationDate.toDate()});
       return({orderId: inboundOrder.orderId, handlingUnit: handlingUnit})
     });
-    const handlingUnits = inboundOrders.map((inboundOrder) => inboundOrder.handlingUnit);
-    HandlingUnit.insertMany(handlingUnits).then(() => 'Unidades insertadas');
 
     inboundOrders = groupByArray(inboundOrders, 'orderId');
-
     inboundOrders = inboundOrders.map((inboundOrder) => inboundOrder.values.map((values) => values.handlingUnit));
-    
     inboundOrders = inboundOrders.map((inboundOrder) => new InboundOrder({handlingUnits: inboundOrder}));
-    
-    InboundOrder.insertMany(inboundOrders).then((r) => console.log('Exito', r))
+    InboundOrder.insertMany(inboundOrders)
+
+    let handlingUnits = inboundOrders.map((inboundOrder) => inboundOrder.handlingUnits.map((handlingUnit) => ({...handlingUnit._doc, inboundOrder: inboundOrder._id})));
+    handlingUnits = handlingUnits.flat(1);
+    HandlingUnit.insertMany(handlingUnits);
 
     res.send(inboundOrders);
 }

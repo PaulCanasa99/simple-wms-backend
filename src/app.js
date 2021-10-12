@@ -19,6 +19,7 @@ mongoose.Promise = global.Promise;
 // importing routes
 const productsRoutes = require('./routes/products.routes');
 const inboundOrdersRoutes = require('./routes/inboundOrders.routes');
+const outboundOrdersRoutes = require('./routes/outboundOrders.routes');
 const handlingUnitsRoutes = require('./routes/handlingUnits.routes');
 const ordersRoutes = require('./routes/orders.routes');
 const locationsRoutes = require('./routes/locations.routes');
@@ -40,6 +41,7 @@ app.use(morgan('dev'));
 //routes
 app.use('/products', productsRoutes);
 app.use('/inboundOrders', inboundOrdersRoutes);
+app.use('/outboundOrders', outboundOrdersRoutes);
 app.use('/handlingUnits', handlingUnitsRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/locations', locationsRoutes);

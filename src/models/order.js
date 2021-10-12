@@ -6,9 +6,11 @@ const orderSchema = new mongoose.Schema({
   products: [
     {
       product: {type: Schema.Types.ObjectId, ref: 'Product'},
-      quantity: Number 
+      quantity: Number,
+      status: {type: String, default: 'Pendiente'},
     }  
   ],
+  outboundOrders: [{type: Schema.Types.ObjectId, ref: 'OutboundOrder', default: null}],
   status: {type: String, default: 'Pendiente'},
   date: { type: Date, default: Date.now() },
 })

@@ -6,7 +6,13 @@ const getLocations = async (req, res) => {
 }
 
 const getLocationsByRack = async (req, res) => {
-  let locations = await Location.find().populate('handlingUnit');
+  let locations = await Location.find().populate({
+    path: 'handlingUnit',
+    populate: {
+      path: 'product',
+      model: 'Product'
+    }
+  })
   locations = locations.filter((location) => location.code.startsWith(req.params.rackCode))
   res.send(locations);
 }
