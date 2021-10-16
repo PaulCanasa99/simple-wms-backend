@@ -22,6 +22,7 @@ const outboundSelectionAlgorithm = async (positionsToDispatch, orderId) => {
     for (let i = 0; i < row.quantity; i++) {
       const possibleHandlingUnits = handlingUnits.filter(handlingUnit => handlingUnit.product.code === row.product.code);
       const selectedUnit = aplicarCriterios(possibleHandlingUnits);
+      handlingUnits = updateHandlingUnits(handlingUnits, selectedUnit);
       solution.push(selectedUnit);
     }
   })
@@ -50,6 +51,10 @@ const fechaIngreso = (handlingUnit) => {
 const distancia = (handlingUnit) => {
     const { location } = handlingUnit.location;
     return location.xDistance + location.yDistance + location.zDistance * FACTOR_DISTANCIA_VERTICAL;
+}
+
+const updateHandlingUnits = (handlingUnits, selectedUnit) => {
+  return handlingUnits.filter((handlingUnit) => handlingUnit._id !== selectedUnit._id);
 }
 
 module.exports = {

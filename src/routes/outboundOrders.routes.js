@@ -3,5 +3,6 @@ const outboundOrdersController = require('../controllers/outboundOrders.controll
 const router = express.Router();
 
 router.get('/', outboundOrdersController.getOutboundOrders);
+router.get('/:orderId', outboundOrdersController.getOutboundOrderById);
 
 module.exports = router;

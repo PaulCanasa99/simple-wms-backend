@@ -9,6 +9,17 @@ const getInboundOrders = async (req, res) => {
   res.send(inboundOrders);
 }
 
+const getInboundOrderById = async (req, res) => {
+  let inboundOrder = await InboundOrder.findById(req.params.orderId).populate({
+    path: 'handlingUnits',
+    populate: {
+      path: 'product',
+      model: 'Product'
+    }
+  }).exec();
+  res.send(inboundOrder);
+}
+
 const importInboundOrders = async (req, res) => {
     let inboundOrders =  req.body.data;
     const products = await Product.find();
@@ -33,5 +44,6 @@ const importInboundOrders = async (req, res) => {
 
 module.exports = {
   getInboundOrders,
+  getInboundOrderById,
   importInboundOrders
 }

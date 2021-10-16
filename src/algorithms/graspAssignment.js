@@ -1,8 +1,8 @@
 const HandlingUnit = require("../models/handlingUnit");
 const Location = require("../models/location");
 
-const NUM_MAX_ITERACIONES = 10;
-const NUM_MAX_ITERACIONES_LOCAL = 100;
+const NUM_MAX_ITERACIONES = 50;
+const NUM_MAX_ITERACIONES_LOCAL = 10;
 const ALFA = 0.25;
 const ROTACION_A = 1;
 const ROTACION_B = 0.5;
@@ -92,11 +92,6 @@ const convertirRotacion = (producto) => {
 
 const getDistance = (location) => {
   return location.xDistance + location.yDistance + location.zDistance * FACTOR_DISTANCIA_VERTICAL;
-}
-
-const obtenerDistancia = (ubicacion) => {
-  const { posicionEnMetros } = ubicacion;
-  return posicionEnMetros.fila + posicionEnMetros.columna + posicionEnMetros.nivel * FACTOR_DISTANCIA_VERTICAL;
 }
 
 const obtenerValorPeorCandidato = (paresPosibles) => {
