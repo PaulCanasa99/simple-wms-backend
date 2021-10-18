@@ -10,6 +10,7 @@ const handlingUnitSchema = new mongoose.Schema({
     location: { type: Schema.Types.ObjectId, ref: 'Location', default: null },
     inboundOrder: { type: Schema.Types.ObjectId, ref: 'InboundOrder'},
     outboundOrder: { type: Schema.Types.ObjectId, ref: 'OutboundOrder', default: null},
+    transportOrder: { type: Schema.Types.ObjectId, ref: 'TransportOrder', default: null},
 })
 
 handlingUnitSchema.virtual('id').get(function(){

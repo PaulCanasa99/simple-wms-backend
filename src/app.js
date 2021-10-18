@@ -23,7 +23,7 @@ const outboundOrdersRoutes = require('./routes/outboundOrders.routes');
 const handlingUnitsRoutes = require('./routes/handlingUnits.routes');
 const ordersRoutes = require('./routes/orders.routes');
 const locationsRoutes = require('./routes/locations.routes');
-
+const transportOrdersRoutes = require('./routes/transportOrders.routes');
 
 
 // settings
@@ -45,6 +45,7 @@ app.use('/outboundOrders', outboundOrdersRoutes);
 app.use('/handlingUnits', handlingUnitsRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/locations', locationsRoutes);
+app.use('/transportOrders', transportOrdersRoutes);
 
 // starting server
 app.listen(app.get('port'), () => {
