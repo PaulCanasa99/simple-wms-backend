@@ -24,7 +24,8 @@ const generateTransportOrders = async (req, res) => {
   outboundOrder.status = 'En proceso';
   await outboundOrder.save();
   handlingUnits.forEach( async handlingUnit => {
-    const transportOrder = new TransportOrder({handlingUnits: handlingUnit, outboundOrder: req.params.orderId, location: handlingUnit.location})
+    const handlingUnitData = await HandlingUnit.findById(handlingUnit);
+    const transportOrder = new TransportOrder({handlingUnit: handlingUnit, outboundOrder: req.params.orderId, location: handlingUnitData.location})
     await transportOrder.save();
     await HandlingUnit.findByIdAndUpdate(handlingUnit, {status: 'Por despachar', transportOrder: transportOrder._id});
   });
