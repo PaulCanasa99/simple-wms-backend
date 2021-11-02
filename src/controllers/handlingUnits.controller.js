@@ -82,11 +82,18 @@ const dispatchHandlingUnit = async (req, res) => {
   res.send(req.body.data);
 }
 
+const verifyHandlingUnit = async (req, res) => {
+  await HandlingUnit.findByIdAndUpdate(req.params.handlingUnitId, {status: 'Registrado'});
+  await InboundOrder.findByIdAndUpdate(req.params.inboundOrderId, {status: 'En proceso'});
+  res.send(req.params.handlingUnitId);
+}
+
 module.exports = {
     getHandlingUnits,
     getHandlingUnitsByProductId,
     graspAssingation,
     graspAssingationTransport,
     storeHandlingUnit,
-    dispatchHandlingUnit
+    dispatchHandlingUnit,
+    verifyHandlingUnit
 }
