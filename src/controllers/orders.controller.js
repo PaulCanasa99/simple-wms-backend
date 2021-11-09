@@ -21,7 +21,7 @@ const getOrderById = async (req, res) => {
   }).exec();
   const handlingUnits = await HandlingUnit.find().populate('product');
   const auxArray = order.products.map((product) => {
-    const handlingUnitsStock = handlingUnits.filter((handlingUnit) => handlingUnit.status === 'Disponible' && handlingUnit.product.code === product.product.code);
+    const handlingUnitsStock = handlingUnits.filter((handlingUnit) => handlingUnit.status === 'Libre disponibilidad' && handlingUnit.product.code === product.product.code);
     return ({...product._doc, stock: handlingUnitsStock.length});
   })
   const auxObj = {...order._doc};
@@ -62,7 +62,7 @@ const importOrders = async (req, res) => {
       return new Order({customer: order.key, products: order.values.map((values) => values.product)})
     });
 
-    Order.insertMany(orders).then((r) => console.log('Exito', r));
+    Order.create(orders).then((r) => console.log('Exito', r));
     res.send(orders);
 }
 

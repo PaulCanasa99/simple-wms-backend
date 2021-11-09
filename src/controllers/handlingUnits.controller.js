@@ -25,14 +25,14 @@ const graspAssingation = async (req, res) => {
     })
   })
   handlingUnitsLocations.forEach( async (handlingUnitLocation) => {
-    await HandlingUnit.findByIdAndUpdate(handlingUnitLocation.handlingUnit, {location: handlingUnitLocation.location, status: 'Disponible'});
+    await HandlingUnit.findByIdAndUpdate(handlingUnitLocation.handlingUnit, {location: handlingUnitLocation.location, status: 'Libre disponibilidad'});
     const handlingUnit = await HandlingUnit.findById(handlingUnitLocation.handlingUnit);
     handlingUnit.location = handlingUnitLocation.location;
-    handlingUnit.status = 'Disponible';
+    handlingUnit.status = 'Libre disponibilidad';
     await handlingUnit.save();
     const inboundOrder = await InboundOrder.findById(handlingUnit.inboundOrder);
     const inboundOrderHandlingUnits = await InboundOrder.findById(handlingUnit.inboundOrder).populate('handlingUnits');
-    if (inboundOrderHandlingUnits.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Disponible'))
+    if (inboundOrderHandlingUnits.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Libre disponibilidad'))
       await inboundOrder.update({status: 'Finalizado'});
     else await inboundOrder.update({status: 'En proceso'});
     await Location.findByIdAndUpdate(handlingUnitLocation.location, {handlingUnit: handlingUnitLocation.handlingUnit, status: 'Ocupado'});
@@ -61,10 +61,10 @@ const graspAssingationTransport = async (req, res) => {
 const storeHandlingUnit = async (req, res) => {
   const transportOrder = req.body.data;
   await TransportOrder.findByIdAndUpdate(transportOrder._id, {status: 'Finalizado'});
-  await HandlingUnit.findByIdAndUpdate(transportOrder.handlingUnit._id, {status: 'Disponible'});
+  await HandlingUnit.findByIdAndUpdate(transportOrder.handlingUnit._id, {status: 'Libre disponibilidad'});
   await Location.findByIdAndUpdate(transportOrder.handlingUnit.location._id, {status: 'Ocupado'});
   const inboundOrder = await InboundOrder.findById(transportOrder.handlingUnit.inboundOrder).populate('handlingUnits');
-  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Disponible'))
+  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Libre disponibilidad'))
     await inboundOrder.update({status: 'Finalizado'});
   else await inboundOrder.update({status: 'En proceso'});
   res.send(req.body.data);

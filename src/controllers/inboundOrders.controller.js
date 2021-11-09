@@ -33,12 +33,11 @@ const importInboundOrders = async (req, res) => {
     inboundOrders = groupByArray(inboundOrders, 'orderId');
     inboundOrders = inboundOrders.map((inboundOrder) => inboundOrder.values.map((values) => values.handlingUnit));
     inboundOrders = inboundOrders.map((inboundOrder) => new InboundOrder({handlingUnits: inboundOrder}));
-    InboundOrder.insertMany(inboundOrders)
 
     let handlingUnits = inboundOrders.map((inboundOrder) => inboundOrder.handlingUnits.map((handlingUnit) => ({...handlingUnit._doc, inboundOrder: inboundOrder._id})));
     handlingUnits = handlingUnits.flat(1);
-    HandlingUnit.insertMany(handlingUnits);
-
+    await HandlingUnit.create(handlingUnits);
+    await InboundOrder.create(inboundOrders);
     res.send(inboundOrders);
 }
 

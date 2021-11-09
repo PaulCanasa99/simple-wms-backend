@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const transportOrderSchema = new mongoose.Schema({
     handlingUnit: { type: Schema.Types.ObjectId, ref: 'HandlingUnit' },
@@ -9,6 +10,7 @@ const transportOrderSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now() },
     inboundOrder: { type: Schema.Types.ObjectId, ref: 'InboundOrder', default: null },
     outboundOrder: { type: Schema.Types.ObjectId, ref: 'OutboundOrder', default: null },
+    transportOrderId: Number
 })
 
 transportOrderSchema.virtual('id').get(function(){
@@ -18,5 +20,7 @@ transportOrderSchema.virtual('id').get(function(){
 transportOrderSchema.set('toJSON', {
     virtuals: true
 });
+
+transportOrderSchema.plugin(AutoIncrement, {id: 'transportOrder_counter', inc_field: 'transportOrderId'})
 
 module.exports = mongoose.model('TransportOrder', transportOrderSchema);

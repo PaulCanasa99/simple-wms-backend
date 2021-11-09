@@ -1,7 +1,7 @@
 const HandlingUnit = require("../models/handlingUnit");
 const Location = require("../models/location");
 
-const NUM_MAX_ITERACIONES = 50;
+const NUM_MAX_ITERACIONES = 100;
 const NUM_MAX_ITERACIONES_LOCAL = 10;
 const ALFA = 0.25;
 const ROTACION_A = 1;

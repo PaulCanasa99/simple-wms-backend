@@ -16,7 +16,7 @@ const outboundSelectionAlgorithm = async (positionsToDispatch, orderId) => {
   order = positionsToDispatch.map((position) => order.products.find((product) => product._id.toString() === position ));
 
   let handlingUnits = await HandlingUnit.find().populate('product').populate('location');
-  handlingUnits = handlingUnits.filter(handlingUnit => handlingUnit.status === 'Disponible');
+  handlingUnits = handlingUnits.filter(handlingUnit => handlingUnit.status === 'Libre disponibilidad');
 
   order.forEach(row => {
     for (let i = 0; i < row.quantity; i++) {
