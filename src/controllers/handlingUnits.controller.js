@@ -7,12 +7,14 @@ const graspAssignment = require('../algorithms/graspAssignment');
 
 const getHandlingUnits = async (req, res) => {
     const handlingUnits = await HandlingUnit.find().populate('product').populate('location');
+    handlingUnits.sort((a, b) => a.handlingUnitId - b.handlingUnitId);
     res.send(handlingUnits);
 }
 
 const getHandlingUnitsByProductId = async (req, res) => {
   let handlingUnits = await HandlingUnit.find().populate('product').populate('inboundOrder');
   handlingUnits = handlingUnits.filter((handlingUnit) => handlingUnit.product._id.toString() === req.params.productId);
+  handlingUnits.sort((a, b) => a.handlingUnitId - b.handlingUnitId);
   res.send(handlingUnits);
 }
 
@@ -64,9 +66,19 @@ const storeHandlingUnit = async (req, res) => {
   await HandlingUnit.findByIdAndUpdate(transportOrder.handlingUnit._id, {status: 'Libre disponibilidad'});
   await Location.findByIdAndUpdate(transportOrder.handlingUnit.location._id, {status: 'Ocupado'});
   const inboundOrder = await InboundOrder.findById(transportOrder.handlingUnit.inboundOrder).populate('handlingUnits');
-  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Libre disponibilidad'))
+  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Libre disponibilidad' || handlingUnit.status === 'Observado'))
     await inboundOrder.update({status: 'Finalizado'});
-  else await inboundOrder.update({status: 'En proceso'});
+  res.send(req.body.data);
+}
+
+const warnHandlingUnit = async (req, res) => {
+  const transportOrder = req.body.data;
+  await TransportOrder.findByIdAndUpdate(transportOrder._id, {status: 'Observado'});
+  await HandlingUnit.findByIdAndUpdate(transportOrder.handlingUnit._id, {status: 'Observado'});
+  // await Location.findByIdAndUpdate(transportOrder.handlingUnit.location._id, {status: 'Libre'});
+  const inboundOrder = await InboundOrder.findById(transportOrder.handlingUnit.inboundOrder).populate('handlingUnits');
+  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Libre disponibilidad' || handlingUnit.status === 'Observado' ))
+    await inboundOrder.update({status: 'Finalizado'});
   res.send(req.body.data);
 }
 
@@ -84,7 +96,21 @@ const dispatchHandlingUnit = async (req, res) => {
 
 const verifyHandlingUnit = async (req, res) => {
   await HandlingUnit.findByIdAndUpdate(req.params.handlingUnitId, {status: 'Registrado'});
-  await InboundOrder.findByIdAndUpdate(req.params.inboundOrderId, {status: 'En proceso'});
+  await InboundOrder.findByIdAndUpdate(req.params.inboundOrderId, {status: 'En inspección'});
+  const inboundOrder = await InboundOrder.findById(req.params.inboundOrderId).populate('handlingUnits');
+  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Registrado' || handlingUnit.status === 'Observado' ))
+    await inboundOrder.update({status: 'En proceso'});
+  else await inboundOrder.update({status: 'En inspección'});
+  res.send(req.params.handlingUnitId);
+}
+
+const warnVerifyHandlingUnit = async (req, res) => {
+  await HandlingUnit.findByIdAndUpdate(req.params.handlingUnitId, {status: 'Observado'});
+  await InboundOrder.findByIdAndUpdate(req.params.inboundOrderId, {status: 'En inspección'});
+  const inboundOrder = await InboundOrder.findById(req.params.inboundOrderId).populate('handlingUnits');
+  if (inboundOrder.handlingUnits.every((handlingUnit) => handlingUnit.status === 'Registrado' || handlingUnit.status === 'Observado' ))
+    await inboundOrder.update({status: 'En proceso'});
+  else await inboundOrder.update({status: 'En inspección'});
   res.send(req.params.handlingUnitId);
 }
 
@@ -94,6 +120,8 @@ module.exports = {
     graspAssingation,
     graspAssingationTransport,
     storeHandlingUnit,
+    warnHandlingUnit,
     dispatchHandlingUnit,
-    verifyHandlingUnit
+    verifyHandlingUnit,
+    warnVerifyHandlingUnit
 }

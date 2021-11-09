@@ -3,7 +3,7 @@ const TransportOrder = require("../models/transportOrder");
 const HandlingUnit = require("../models/handlingUnit");
 
 const getOutboundOrders = async (req, res) => {
-  const outboundOrders = await OutboundOrder.find();
+  const outboundOrders = await OutboundOrder.find().populate('order');
   res.send(outboundOrders);
 }
 

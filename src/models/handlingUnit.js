@@ -7,7 +7,7 @@ const handlingUnitSchema = new mongoose.Schema({
     entryDate: { type: Date, default: Date.now() },
     exitDate: { type: Date, default: null },
     expirationDate: Date,
-    status: { type: String, default: 'Registrado' },
+    status: { type: String, default: 'En inspección' },
     location: { type: Schema.Types.ObjectId, ref: 'Location', default: null },
     inboundOrder: { type: Schema.Types.ObjectId, ref: 'InboundOrder'},
     outboundOrder: { type: Schema.Types.ObjectId, ref: 'OutboundOrder', default: null},

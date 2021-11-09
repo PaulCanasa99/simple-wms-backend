@@ -3,7 +3,7 @@ const Location = require("../models/location");
 
 const NUM_MAX_ITERACIONES = 100;
 const NUM_MAX_ITERACIONES_LOCAL = 10;
-const ALFA = 0.25;
+const ALFA = 0;
 const ROTACION_A = 1;
 const ROTACION_B = 0.5;
 const ROTACION_C = 0.1;

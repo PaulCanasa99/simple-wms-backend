@@ -6,6 +6,8 @@ const { groupByArray } = require("../utils/helpers");
 
 const getInboundOrders = async (req, res) => {
   const inboundOrders = await InboundOrder.find();
+  inboundOrders.sort((a, b) => a.inboundOrderId - b.inboundOrderId);
+
   res.send(inboundOrders);
 }
 

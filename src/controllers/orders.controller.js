@@ -8,6 +8,7 @@ const { groupByArray } = require("../utils/helpers");
 
 const getOrders = async (req, res) => {
   const orders = await Order.find().populate('customer').populate('products');
+  orders.sort((a, b) => a.orderId - b.orderId);
   res.send(orders);
 }
 

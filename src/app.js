@@ -24,6 +24,7 @@ const handlingUnitsRoutes = require('./routes/handlingUnits.routes');
 const ordersRoutes = require('./routes/orders.routes');
 const locationsRoutes = require('./routes/locations.routes');
 const transportOrdersRoutes = require('./routes/transportOrders.routes');
+const warehouseWorkerRoutes = require('./routes/warehouseWorkers.routes');
 
 
 // settings
@@ -46,6 +47,7 @@ app.use('/handlingUnits', handlingUnitsRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/locations', locationsRoutes);
 app.use('/transportOrders', transportOrdersRoutes);
+app.use('/warehouseWorkers', warehouseWorkerRoutes);
 
 // starting server
 app.listen(app.get('port'), () => {
