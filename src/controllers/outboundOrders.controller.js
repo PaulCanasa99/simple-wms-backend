@@ -4,6 +4,7 @@ const HandlingUnit = require("../models/handlingUnit");
 
 const getOutboundOrders = async (req, res) => {
   const outboundOrders = await OutboundOrder.find().populate('order');
+  outboundOrders.sort((a, b) => a.outboundOrderId - b.outboundOrderId);
   res.send(outboundOrders);
 }
 

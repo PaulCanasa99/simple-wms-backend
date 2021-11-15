@@ -12,7 +12,7 @@ const getHandlingUnits = async (req, res) => {
 }
 
 const getHandlingUnitsByProductId = async (req, res) => {
-  let handlingUnits = await HandlingUnit.find().populate('product').populate('inboundOrder');
+  let handlingUnits = await HandlingUnit.find().populate('product').populate('inboundOrder').populate('outboundOrder');
   handlingUnits = handlingUnits.filter((handlingUnit) => handlingUnit.product._id.toString() === req.params.productId);
   handlingUnits.sort((a, b) => a.handlingUnitId - b.handlingUnitId);
   res.send(handlingUnits);

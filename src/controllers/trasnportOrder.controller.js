@@ -8,6 +8,7 @@ const getTransportOrders = async (req, res) => {
       model: 'Product'
     }
   });
+  transportOrders.sort((a, b) => a.transportOrderId - b.transportOrderId);
   res.send(transportOrders);
 }
 

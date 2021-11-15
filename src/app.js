@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 // connecting to db
-const dbURI = 'mongodb://admin:admin@cluster0-shard-00-02.uxkzx.mongodb.net:27017/simple_wms?authSource=admin&replicaSet=atlas-63e2vz-shard-0&readPreference=primary&appname=MongoDB%20Compass&retryWrites=false&directConnection=true&ssl=true';
+const dbURI = 'mongodb+srv://admin:admin@cluster0.uxkzx.mongodb.net/simple_wms?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI)
     .then(() => console.log("Database Connected"))
