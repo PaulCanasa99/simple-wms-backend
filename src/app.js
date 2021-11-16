@@ -28,7 +28,7 @@ const warehouseWorkerRoutes = require('./routes/warehouseWorkers.routes');
 
 
 // settings
-app.set('port', process.env.PORT || 3001)
+app.set('port', process.env.PORT || 443)
 
 // middlewares
 app.use(
