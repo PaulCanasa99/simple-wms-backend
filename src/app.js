@@ -26,9 +26,8 @@ const locationsRoutes = require('./routes/locations.routes');
 const transportOrdersRoutes = require('./routes/transportOrders.routes');
 const warehouseWorkerRoutes = require('./routes/warehouseWorkers.routes');
 
-const port  = process.env.NODE_ENV === 'production' ? 443 : 3001;
 // settings
-app.set('port', port);
+app.set('port', process.env.PORT || 3001)
 
 // middlewares
 app.use(
