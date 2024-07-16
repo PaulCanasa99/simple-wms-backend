@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 // connecting to db
-const dbURI = 'mongodb+srv://admin:admin@cluster0.uxkzx.mongodb.net/simple_wms?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://admin:abcd1234@cluster0.0eszvri.mongodb.net/simplewms?retryWrites=true&w=majority&appName=Cluster0'
 
 mongoose.connect(dbURI)
     .then(() => console.log("Database Connected"))
